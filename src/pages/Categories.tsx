@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { categories, getBestsellerBooks, getFeaturedBooks, getBooksByCategory } from '../data/books';
+import { categories, genres, getBestsellerBooks, getFeaturedBooks } from '../data/books';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import CategoryCard from '../components/CategoryCard';
@@ -46,8 +46,40 @@ const Categories = () => {
           </div>
         </section>
         
-        {/* Featured books section */}
+        {/* Genres by category */}
         <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-serif font-bold mb-8">Popular Genres</h2>
+            
+            {categories.slice(0, 4).map(category => (
+              <div key={category.id} className="mb-12">
+                <div className="flex items-end justify-between mb-6">
+                  <h3 className="text-xl font-serif font-medium">{category.name} Genres</h3>
+                  <Button variant="link" asChild>
+                    <Link to={`/category/${category.slug}`}>View All</Link>
+                  </Button>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                  {genres
+                    .filter(genre => genre.category === category.id)
+                    .slice(0, 6)
+                    .map(genre => (
+                      <Link
+                        key={genre.id}
+                        to={`/genre/${genre.slug}`}
+                        className="bg-secondary/80 rounded-lg p-4 hover:bg-secondary transition-colors text-center"
+                      >
+                        <h4 className="text-base font-medium">{genre.name}</h4>
+                      </Link>
+                    ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+        
+        {/* Featured books section */}
+        <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="flex items-end justify-between mb-8">
               <div>
@@ -59,7 +91,7 @@ const Categories = () => {
               </Button>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
               {featuredBooks.map((book) => (
                 <BookCard key={book.id} book={book} />
               ))}
@@ -68,7 +100,7 @@ const Categories = () => {
         </section>
         
         {/* Category exploration guide */}
-        <section className="py-16">
+        <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="bg-secondary/80 rounded-xl p-8 md:p-12">
               <div className="max-w-3xl mx-auto">
@@ -79,19 +111,19 @@ const Categories = () => {
                     <ul className="space-y-2">
                       <li className="flex items-center">
                         <ChevronRight className="w-4 h-4 text-primary mr-2" />
-                        <span>Escape into fantastical worlds with Fantasy</span>
+                        <Link to="/genre/fantasy" className="hover:underline">Escape into fantastical worlds with Fantasy</Link>
                       </li>
                       <li className="flex items-center">
                         <ChevronRight className="w-4 h-4 text-primary mr-2" />
-                        <span>Experience heartwarming tales in Romance</span>
+                        <Link to="/genre/romance" className="hover:underline">Experience heartwarming tales in Romance</Link>
                       </li>
                       <li className="flex items-center">
                         <ChevronRight className="w-4 h-4 text-primary mr-2" />
-                        <span>Solve crimes with our Mystery collection</span>
+                        <Link to="/genre/mystery-thriller" className="hover:underline">Solve crimes with our Mystery collection</Link>
                       </li>
                       <li className="flex items-center">
                         <ChevronRight className="w-4 h-4 text-primary mr-2" />
-                        <span>Explore tomorrow with Science Fiction</span>
+                        <Link to="/genre/sci-fi" className="hover:underline">Explore tomorrow with Science Fiction</Link>
                       </li>
                     </ul>
                   </div>
@@ -100,19 +132,19 @@ const Categories = () => {
                     <ul className="space-y-2">
                       <li className="flex items-center">
                         <ChevronRight className="w-4 h-4 text-primary mr-2" />
-                        <span>Learn from the best with Biographies</span>
+                        <Link to="/genre/biography" className="hover:underline">Learn from the best with Biographies</Link>
                       </li>
                       <li className="flex items-center">
                         <ChevronRight className="w-4 h-4 text-primary mr-2" />
-                        <span>Expand your knowledge with History</span>
+                        <Link to="/genre/history" className="hover:underline">Expand your knowledge with History</Link>
                       </li>
                       <li className="flex items-center">
                         <ChevronRight className="w-4 h-4 text-primary mr-2" />
-                        <span>Transform your life with Self-Help</span>
+                        <Link to="/genre/self-help" className="hover:underline">Transform your life with Self-Help</Link>
                       </li>
                       <li className="flex items-center">
                         <ChevronRight className="w-4 h-4 text-primary mr-2" />
-                        <span>Stay informed with Current Affairs</span>
+                        <Link to="/genre/science-tech" className="hover:underline">Stay informed with Science & Technology</Link>
                       </li>
                     </ul>
                   </div>

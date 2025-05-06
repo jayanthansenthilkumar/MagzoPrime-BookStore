@@ -36,10 +36,10 @@ const Bestsellers = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl font-serif font-bold mb-8">Top 10 Bestsellers</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {bestsellerBooks.slice(0, 10).map((book, index) => (
                 <div key={book.id} className="relative">
-                  <div className="absolute -left-2 -top-2 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold z-10">
+                  <div className="absolute -left-2 -top-2 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold z-10 shadow-md">
                     {index + 1}
                   </div>
                   <BookCard book={book} />
@@ -49,30 +49,18 @@ const Bestsellers = () => {
           </div>
         </section>
         
-        {/* All Bestsellers */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-serif font-bold mb-8">All Bestsellers</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-              {bestsellerBooks.slice(10).map((book) => (
-                <BookCard key={book.id} book={book} />
-              ))}
-            </div>
-          </div>
-        </section>
-        
         {/* Bestseller Categories */}
-        <section className="py-16">
+        <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl font-serif font-bold mb-8">Bestsellers by Category</h2>
             
             <div className="space-y-12">
               <div>
                 <h3 className="text-xl font-serif font-medium mb-6 pb-2 border-b">Fiction Bestsellers</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
                   {bestsellerBooks
-                    .filter(book => book.category === 'fiction' || book.genre === 'fantasy' || book.genre === 'romance')
-                    .slice(0, 4)
+                    .filter(book => book.category === 'cat-fiction')
+                    .slice(0, 5)
                     .map(book => (
                       <BookCard key={book.id} book={book} />
                     ))
@@ -82,10 +70,10 @@ const Bestsellers = () => {
               
               <div>
                 <h3 className="text-xl font-serif font-medium mb-6 pb-2 border-b">Non-fiction Bestsellers</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
                   {bestsellerBooks
-                    .filter(book => book.category === 'non-fiction' || book.genre === 'biography' || book.genre === 'business')
-                    .slice(0, 4)
+                    .filter(book => book.category === 'cat-nonfiction')
+                    .slice(0, 5)
                     .map(book => (
                       <BookCard key={book.id} book={book} />
                     ))
@@ -94,11 +82,11 @@ const Bestsellers = () => {
               </div>
               
               <div>
-                <h3 className="text-xl font-serif font-medium mb-6 pb-2 border-b">Young Adult Bestsellers</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <h3 className="text-xl font-serif font-medium mb-6 pb-2 border-b">Children's & Young Adult Bestsellers</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
                   {bestsellerBooks
-                    .filter(book => book.category === 'young-adult' || book.genre === 'fantasy')
-                    .slice(0, 4)
+                    .filter(book => book.category === 'cat-children')
+                    .slice(0, 5)
                     .map(book => (
                       <BookCard key={book.id} book={book} />
                     ))

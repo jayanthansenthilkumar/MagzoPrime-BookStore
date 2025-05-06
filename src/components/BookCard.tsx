@@ -49,7 +49,7 @@ const BookCard = ({ book, compact = false }: BookCardProps) => {
 
   if (compact) {
     return (
-      <Card className="book-card h-full overflow-hidden border border-border">
+      <Card className="book-card h-full overflow-hidden border border-border hover:border-primary/30 transition-colors">
         <CardContent className="p-3 h-full flex flex-col">
           <Link to={`/book/${book.id}`} className="flex items-center space-x-4">
             <div className="relative flex-shrink-0 w-16 h-24 bg-muted">
@@ -82,37 +82,40 @@ const BookCard = ({ book, compact = false }: BookCardProps) => {
   }
 
   return (
-    <Card className="book-card h-full overflow-hidden border border-border">
+    <Card className="book-card h-full overflow-hidden border border-border hover:border-primary/30 transition-colors">
       <CardContent className="p-3 h-full flex flex-col">
         <Link to={`/book/${book.id}`} className="flex flex-col flex-grow">
           <div className="relative aspect-[2/3] bg-muted mb-3 overflow-hidden">
             <img 
               src={book.coverImage} 
               alt={book.title}
-              className="absolute inset-0 w-full h-full object-cover"
+              className="w-full h-full object-cover"
             />
             {renderBadges()}
           </div>
-          <h3 className="font-medium line-clamp-2 min-h-[2.5rem] mb-1">{book.title}</h3>
-          <p className="text-sm text-muted-foreground line-clamp-1">{book.author}</p>
-          <div className="mt-2 flex items-center">
-            <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
-            <span className="text-sm ml-1">{book.rating}</span>
-          </div>
-          <div className="mt-auto pt-2">
-            <div className="font-medium">
-              ${book.price.toFixed(2)}
-              {book.originalPrice && (
-                <span className="text-sm text-muted-foreground line-through ml-2">
-                  ${book.originalPrice.toFixed(2)}
-                </span>
-              )}
+          <div className="flex flex-col flex-grow">
+            <h3 className="font-medium line-clamp-2 h-12 mb-1">{book.title}</h3>
+            <p className="text-sm text-muted-foreground line-clamp-1 mb-2">{book.author}</p>
+            <div className="flex items-center mb-2">
+              <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+              <span className="text-sm ml-1">{book.rating}</span>
+            </div>
+            <div className="mt-auto">
+              <div className="font-medium">
+                ${book.price.toFixed(2)}
+                {book.originalPrice && (
+                  <span className="text-sm text-muted-foreground line-through ml-2">
+                    ${book.originalPrice.toFixed(2)}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </Link>
         <Button 
           onClick={handleAddToCart} 
           className="w-full mt-3"
+          size="sm"
         >
           Add to Cart
         </Button>

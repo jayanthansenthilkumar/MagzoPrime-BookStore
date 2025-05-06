@@ -12,6 +12,8 @@ import NotFound from "./pages/NotFound";
 import BookDetail from "./pages/BookDetail";
 import CartPage from "./pages/CartPage";
 import Login from "./pages/Login";
+import CategoryDetail from "./pages/CategoryDetail";
+import GenreDetail from "./pages/GenreDetail";
 
 // Admin pages
 import Dashboard from "./pages/admin/Dashboard";
@@ -31,6 +33,8 @@ const App = () => (
           {/* Customer-facing routes */}
           <Route path="/" element={<Index />} />
           <Route path="/categories" element={<Categories />} />
+          <Route path="/category/:slug" element={<CategoryDetail />} />
+          <Route path="/genre/:slug" element={<GenreDetail />} />
           <Route path="/bestsellers" element={<Bestsellers />} />
           <Route path="/new-releases" element={<NewReleases />} />
           <Route path="/book/:id" element={<BookDetail />} />

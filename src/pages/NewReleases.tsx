@@ -36,7 +36,7 @@ const NewReleases = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl font-serif font-bold mb-8">This Month's New Releases</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {newReleases.slice(0, 10).map((book) => (
                 <BookCard key={book.id} book={book} />
               ))}
@@ -85,14 +85,37 @@ const NewReleases = () => {
           </div>
         </section>
         
-        {/* All New Releases */}
+        {/* New Releases by Genre */}
         <section className="py-16">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-serif font-bold mb-8">All New Releases</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-              {newReleases.slice(10).map((book) => (
-                <BookCard key={book.id} book={book} />
-              ))}
+            <h2 className="text-2xl font-serif font-bold mb-8">New Releases by Genre</h2>
+            
+            <div className="space-y-12">
+              <div>
+                <h3 className="text-xl font-serif font-medium mb-6 pb-2 border-b">Fiction</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                  {newReleases
+                    .filter(book => book.category === 'cat-fiction')
+                    .slice(0, 5)
+                    .map(book => (
+                      <BookCard key={book.id} book={book} />
+                    ))
+                  }
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-xl font-serif font-medium mb-6 pb-2 border-b">Non-fiction</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                  {newReleases
+                    .filter(book => book.category === 'cat-nonfiction')
+                    .slice(0, 5)
+                    .map(book => (
+                      <BookCard key={book.id} book={book} />
+                    ))
+                  }
+                </div>
+              </div>
             </div>
           </div>
         </section>
