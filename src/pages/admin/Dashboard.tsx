@@ -1,48 +1,96 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Book as BookIcon, Users, ShoppingCart, DollarSign } from 'lucide-react';
-import { books } from '../../data/books';
-import { getOrders } from '../../data/orders';
-import { users } from '../../data/users';
 import AdminLayout from './AdminLayout';
+import { getDashboardStats, getRecentOrders, getLowStockBooks } from '../../services/dashboardService';
 
 const Dashboard = () => {
-  const orders = getOrders();
-  const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [dashboardData, setDashboardData] = useState({
+    stats: {
+      books: { count: 0, change: '' },
+      users: { count: 0, change: '' },
+      orders: { count: 0, change: '' },
+      revenue: { total: 0, change: '' }
+    },
+    recentOrders: [],
+    lowStockBooks: []
+  });
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        // Fetch all dashboard data in parallel
+        const [statsData, ordersData, booksData] = await Promise.all([
+          getDashboardStats(),
+          getRecentOrders(5),
+          getLowStockBooks(10, 5)
+        ]);
+        
+        setDashboardData({
+          stats: statsData,
+          recentOrders: ordersData,
+          lowStockBooks: booksData
+        });
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching dashboard data:', err);
+        setError('Failed to load dashboard data. Please try again.');
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
   
   const stats = [
     {
       name: 'Total Books',
-      value: books.length,
+      value: dashboardData.stats.books.count,
       icon: <BookIcon className="h-8 w-8 text-blue-500" />,
-      change: '+2% from last month',
+      change: dashboardData.stats.books.change,
     },
     {
       name: 'Total Users',
-      value: users.length,
+      value: dashboardData.stats.users.count,
       icon: <Users className="h-8 w-8 text-green-500" />,
-      change: '+5% from last month',
+      change: dashboardData.stats.users.change,
     },
     {
       name: 'Total Orders',
-      value: orders.length,
+      value: dashboardData.stats.orders.count,
       icon: <ShoppingCart className="h-8 w-8 text-amber-500" />,
-      change: '+12% from last month',
+      change: dashboardData.stats.orders.change,
     },
     {
       name: 'Total Revenue',
-      value: `$${totalRevenue.toFixed(2)}`,
+      value: `$${dashboardData.stats.revenue.total.toFixed(2)}`,
       icon: <DollarSign className="h-8 w-8 text-red-500" />,
-      change: '+8% from last month',
+      change: dashboardData.stats.revenue.change,
     },
   ];
   
-  const recentOrders = orders.slice(0, 5);
-  const lowStockBooks = books
-    .filter(book => book.inStock < 10)
-    .sort((a, b) => a.inStock - b.inStock)
-    .slice(0, 5);
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="flex justify-center items-center h-64">
+          <div className="text-lg font-medium">Loading dashboard data...</div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <AdminLayout>
+        <div className="bg-red-100 p-4 rounded-md mb-6 text-red-700">
+          {error}
+        </div>
+      </AdminLayout>
+    );
+  }
   
   return (
     <AdminLayout>
@@ -76,17 +124,21 @@ const Dashboard = () => {
             <CardTitle>Recent Orders</CardTitle>
           </CardHeader>
           <CardContent>
-            {orders.length > 0 ? (
+            {dashboardData.recentOrders.length > 0 ? (
               <div className="divide-y">
-                {recentOrders.map((order) => (
-                  <div key={order.id} className="py-3 flex justify-between items-center">
+                {dashboardData.recentOrders.map((order) => (
+                  <div key={order._id} className="py-3 flex justify-between items-center">
                     <div>
-                      <p className="font-medium">{`Order #${order.id.slice(-5)}`}</p>
-                      <p className="text-sm text-muted-foreground">{new Date(order.createdAt).toLocaleDateString()}</p>
+                      <p className="font-medium">{`Order #${order._id.slice(-5)}`}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {new Date(order.createdAt).toLocaleDateString()}
+                      </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium">${order.total.toFixed(2)}</p>
-                      <p className="text-xs px-2 py-1 rounded-full bg-muted inline-block capitalize">{order.status}</p>
+                      <p className="font-medium">${order.totalPrice.toFixed(2)}</p>
+                      <p className="text-xs px-2 py-1 rounded-full bg-muted inline-block capitalize">
+                        {order.orderStatus || (order.isPaid ? 'Paid' : 'Pending')}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -104,12 +156,12 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="divide-y">
-              {lowStockBooks.map((book) => (
-                <div key={book.id} className="py-3 flex justify-between items-center">
+              {dashboardData.lowStockBooks.map((book) => (
+                <div key={book._id} className="py-3 flex justify-between items-center">
                   <div className="flex items-center">
                     <div className="w-10 h-14 bg-muted mr-4">
                       <img 
-                        src={book.coverImage} 
+                        src={book.image} 
                         alt={book.title}
                         className="w-full h-full object-cover"
                       />
@@ -120,8 +172,8 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className={`font-medium ${book.inStock < 5 ? 'text-red-500' : 'text-amber-500'}`}>
-                      {book.inStock} in stock
+                    <p className={`font-medium ${book.countInStock < 5 ? 'text-red-500' : 'text-amber-500'}`}>
+                      {book.countInStock} in stock
                     </p>
                   </div>
                 </div>

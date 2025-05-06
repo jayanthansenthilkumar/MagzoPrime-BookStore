@@ -29,6 +29,7 @@ const bookRoutes = require('./routes/bookRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 // Use routes
 app.use('/api/users', userRoutes);
@@ -36,6 +37,7 @@ app.use('/api/books', bookRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Create uploads directory for book covers
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
