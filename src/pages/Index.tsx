@@ -85,41 +85,39 @@ const Index = () => {
                   <TabsTrigger value="bestsellers">Bestsellers</TabsTrigger>
                   <TabsTrigger value="new">New Releases</TabsTrigger>
                 </TabsList>
+                
+                <TabsContent value="featured" className="mt-6">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                    {featuredBooks.slice(0, 10).map((book) => (
+                      <BookCard key={book.id} book={book} />
+                    ))}
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="bestsellers" className="mt-6">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                    {bestsellerBooks.slice(0, 10).map((book) => (
+                      <BookCard key={book.id} book={book} />
+                    ))}
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="new" className="mt-6">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                    {newReleases.slice(0, 10).map((book) => (
+                      <BookCard key={book.id} book={book} />
+                    ))}
+                  </div>
+                </TabsContent>
+                
+                <div className="flex justify-center mt-10">
+                  <Button size="lg" asChild>
+                    <Link to={`/${activeTab === 'featured' ? 'categories' : activeTab === 'bestsellers' ? 'bestsellers' : 'new-releases'}`}>
+                      View All
+                    </Link>
+                  </Button>
+                </div>
               </Tabs>
-            </div>
-            
-            <div>
-              <TabsContent value="featured" className="mt-0">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {featuredBooks.slice(0, 10).map((book) => (
-                    <BookCard key={book.id} book={book} />
-                  ))}
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="bestsellers" className="mt-0">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {bestsellerBooks.slice(0, 10).map((book) => (
-                    <BookCard key={book.id} book={book} />
-                  ))}
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="new" className="mt-0">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {newReleases.slice(0, 10).map((book) => (
-                    <BookCard key={book.id} book={book} />
-                  ))}
-                </div>
-              </TabsContent>
-            </div>
-            
-            <div className="flex justify-center mt-10">
-              <Button size="lg" asChild>
-                <Link to={`/${activeTab === 'featured' ? 'categories' : activeTab === 'bestsellers' ? 'bestsellers' : 'new-releases'}`}>
-                  View All
-                </Link>
-              </Button>
             </div>
           </div>
         </section>

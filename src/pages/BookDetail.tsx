@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
@@ -229,10 +228,12 @@ const BookDetail = () => {
               <TabsTrigger value="details">Details</TabsTrigger>
               <TabsTrigger value="reviews">Reviews</TabsTrigger>
             </TabsList>
+            
             <TabsContent value="description" className="py-6">
               <h2 className="text-xl font-serif font-bold mb-4">About the Book</h2>
               <p className="text-muted-foreground whitespace-pre-line">{book.description}</p>
             </TabsContent>
+            
             <TabsContent value="details" className="py-6">
               <h2 className="text-xl font-serif font-bold mb-4">Book Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -291,6 +292,7 @@ const BookDetail = () => {
                 </div>
               </div>
             </TabsContent>
+            
             <TabsContent value="reviews" className="py-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-serif font-bold">Customer Reviews</h2>
