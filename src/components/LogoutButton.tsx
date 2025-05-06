@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, ButtonProps } from './ui/button';
 import { LogOut } from 'lucide-react';
-import { setCurrentUser } from '../data/users';
+import { logout } from '../services/userService';
 import { toast } from 'sonner';
 
 interface LogoutButtonProps extends ButtonProps {
@@ -19,7 +19,7 @@ const LogoutButton = ({
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    setCurrentUser(null);
+    logout();
     toast.success('Logged out successfully');
     navigate(redirectTo);
   };

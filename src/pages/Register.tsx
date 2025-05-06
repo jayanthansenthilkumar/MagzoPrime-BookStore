@@ -33,10 +33,24 @@ const Register = () => {
       // Call the register API function
       const userData = await register(name, email, password);
       toast.success('Account created successfully!');
-      navigate('/');
-    } catch (error) {
+      
+      // Redirect based on role
+      if (userData.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+    } catch (error: any) {
       console.error('Registration error:', error);
-      toast.error(error.response?.data?.message || 'Registration failed. Please try again.');
+      
+      // More detailed error handling
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else if (error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error('Registration failed. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }

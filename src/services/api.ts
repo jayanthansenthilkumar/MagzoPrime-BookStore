@@ -12,7 +12,8 @@ const api = axios.create({
 // Add request interceptor for authentication
 api.interceptors.request.use(
   (config) => {
-    const userJSON = localStorage.getItem('user');
+    // Use the consistent key 'bookstore-current-user' for auth
+    const userJSON = localStorage.getItem('bookstore-current-user');
     if (userJSON) {
       const user = JSON.parse(userJSON);
       if (user && user.token) {

@@ -28,14 +28,24 @@ const Login = () => {
       toast.success(`Welcome back, ${user.name}!`);
       
       // Redirect based on role
-      if (user.isAdmin) {
+      if (user.role === 'admin') {
         navigate('/admin');
       } else {
         navigate(redirectTo);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
-      toast.error(error.response?.data?.message || 'Invalid email or password');
+      
+      // More detailed error handling
+      if (error.response?.status === 401) {
+        toast.error('Invalid email or password');
+      } else if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else if (error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error('An error occurred during login. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -96,8 +106,8 @@ const Login = () => {
                   
                   <div className="text-center text-sm text-muted-foreground">
                     <p>Demo credentials:</p>
-                    <p>Admin: admin@bookstore.com / admin123</p>
-                    <p>Customer: customer@example.com / customer123</p>
+                    <p>Admin: admin@magzoprime.com / admin123</p>
+                    <p>Customer: john@example.com / john123</p>
                   </div>
                 </div>
               </form>

@@ -4,7 +4,18 @@ import api from './api';
 export const login = async (email: string, password: string) => {
   const response = await api.post('/users/login', { email, password });
   if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data));
+    // Transform the data to match application's expected structure
+    const userData = {
+      id: response.data._id,
+      name: response.data.name,
+      email: response.data.email,
+      role: response.data.isAdmin ? 'admin' : 'customer',
+      token: response.data.token
+    };
+    
+    // Use consistent key for user storage
+    localStorage.setItem('bookstore-current-user', JSON.stringify(userData));
+    return userData;
   }
   return response.data;
 };
@@ -13,19 +24,30 @@ export const login = async (email: string, password: string) => {
 export const register = async (name: string, email: string, password: string) => {
   const response = await api.post('/users', { name, email, password });
   if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data));
+    // Transform the data to match application's expected structure
+    const userData = {
+      id: response.data._id,
+      name: response.data.name,
+      email: response.data.email,
+      role: response.data.isAdmin ? 'admin' : 'customer',
+      token: response.data.token
+    };
+    
+    // Use consistent key for user storage
+    localStorage.setItem('bookstore-current-user', JSON.stringify(userData));
+    return userData;
   }
   return response.data;
 };
 
 // User logout
 export const logout = () => {
-  localStorage.removeItem('user');
+  localStorage.removeItem('bookstore-current-user');
 };
 
 // Get current user from local storage
 export const getCurrentUser = () => {
-  const userJson = localStorage.getItem('user');
+  const userJson = localStorage.getItem('bookstore-current-user');
   if (userJson) {
     return JSON.parse(userJson);
   }
@@ -45,10 +67,15 @@ export const updateUserProfile = async (userData: any) => {
   // Update the stored user data with the new information
   const currentUser = getCurrentUser();
   if (currentUser) {
-    localStorage.setItem('user', JSON.stringify({
+    const updatedUser = {
       ...currentUser,
-      ...response.data,
-    }));
+      name: response.data.name,
+      email: response.data.email,
+      // Only update role if it's present in the response
+      ...(response.data.isAdmin !== undefined ? { role: response.data.isAdmin ? 'admin' : 'customer' } : {})
+    };
+    
+    localStorage.setItem('bookstore-current-user', JSON.stringify(updatedUser));
   }
   
   return response.data;
