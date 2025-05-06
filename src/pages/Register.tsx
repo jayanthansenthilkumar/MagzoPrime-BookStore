@@ -5,9 +5,10 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 import { toast } from 'sonner';
-import { users, setCurrentUser, registerUser } from '../data/users';
+import { register } from '../services/userService';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { Loader2 } from 'lucide-react';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -17,7 +18,7 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
@@ -28,29 +29,17 @@ const Register = () => {
       return;
     }
     
-    // In a real app, this would be an API call to register the user
-    // For this demo, we'll just simulate creating a new user
-    setTimeout(() => {
-      try {
-        // Use the registerUser function instead of directly modifying the array
-        const newUser = registerUser(name, email, password);
-        
-        // Set current user
-        setCurrentUser(newUser);
-        
-        toast.success('Account created successfully!');
-        navigate('/');
-      } catch (error) {
-        // Handle specific errors
-        if (error instanceof Error) {
-          toast.error(error.message);
-        } else {
-          toast.error('An error occurred. Please try again.');
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }, 1000); // Simulate network delay
+    try {
+      // Call the register API function
+      const userData = await register(name, email, password);
+      toast.success('Account created successfully!');
+      navigate('/');
+    } catch (error) {
+      console.error('Registration error:', error);
+      toast.error(error.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -117,7 +106,14 @@ const Register = () => {
                   </div>
                   
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? 'Creating Account...' : 'Create Account'}
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Creating Account...
+                      </>
+                    ) : (
+                      'Create Account'
+                    )}
                   </Button>
                 </div>
               </form>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -11,16 +11,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger 
 } from './ui/dropdown-menu';
-import { getCurrentUser, setCurrentUser } from '../data/users';
-import { loadCart } from '../data/cart';
+import { getCurrentUser, logout } from '../services/userService';
+import { getCartCount } from '../services/cartService';
 import { toast } from 'sonner';
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [cartItemCount, setCartItemCount] = useState(0);
   const navigate = useNavigate();
   const currentUser = getCurrentUser();
-  const cart = loadCart();
-  const cartItemCount = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+  
+  // Update cart count whenever the component renders
+  useEffect(() => {
+    setCartItemCount(getCartCount());
+  }, []);
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +34,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    setCurrentUser(null);
+    logout();
     toast.success('Logged out successfully');
     navigate('/');
   };
@@ -67,7 +71,7 @@ const Header = () => {
                     <Link to="/new-releases" className="text-lg font-medium">
                       New Releases
                     </Link>
-                    {currentUser?.role === 'admin' && (
+                    {currentUser?.isAdmin && (
                       <Link to="/admin" className="text-lg font-medium text-primary">
                         Admin Dashboard
                       </Link>
@@ -178,7 +182,7 @@ const Header = () => {
                   <DropdownMenuItem asChild>
                     <Link to="/account">My Account</Link>
                   </DropdownMenuItem>
-                  {currentUser.role === 'admin' && (
+                  {currentUser.isAdmin && (
                     <DropdownMenuItem asChild>
                       <Link to="/admin">Admin Dashboard</Link>
                     </DropdownMenuItem>

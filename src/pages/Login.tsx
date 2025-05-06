@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '../components/ui/button';
@@ -6,9 +5,10 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 import { toast } from 'sonner';
-import { authenticateUser, setCurrentUser } from '../data/users';
+import { login } from '../services/userService';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { Loader2 } from 'lucide-react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -24,24 +24,18 @@ const Login = () => {
     setIsLoading(true);
     
     try {
-      // In a real app, this would be an API call
-      const user = authenticateUser(email, password);
+      const user = await login(email, password);
+      toast.success(`Welcome back, ${user.name}!`);
       
-      if (user) {
-        setCurrentUser(user);
-        toast.success(`Welcome back, ${user.name}!`);
-        
-        // Redirect based on role
-        if (user.role === 'admin') {
-          navigate('/admin');
-        } else {
-          navigate(redirectTo === 'checkout' ? '/checkout' : '/');
-        }
+      // Redirect based on role
+      if (user.isAdmin) {
+        navigate('/admin');
       } else {
-        toast.error('Invalid email or password');
+        navigate(redirectTo);
       }
     } catch (error) {
-      toast.error('An error occurred. Please try again.');
+      console.error('Login error:', error);
+      toast.error(error.response?.data?.message || 'Invalid email or password');
     } finally {
       setIsLoading(false);
     }
@@ -90,7 +84,14 @@ const Login = () => {
                     />
                   </div>
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? 'Signing in...' : 'Sign In'}
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Signing in...
+                      </>
+                    ) : (
+                      'Sign In'
+                    )}
                   </Button>
                   
                   <div className="text-center text-sm text-muted-foreground">
