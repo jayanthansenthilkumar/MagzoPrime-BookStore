@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,6 +17,7 @@ import CategoryDetail from "./pages/CategoryDetail";
 import GenreDetail from "./pages/GenreDetail";
 import { ScrollToTop } from "./components/ui/scroll-to-top";
 import { MagzoAIAssistant } from "./components/MagzoAIAssistant";
+import { AutoScrollToTop } from "./components/utils/AutoScrollToTop";
 
 // Admin pages
 import Dashboard from "./pages/admin/Dashboard";
@@ -80,6 +80,7 @@ const App = () => (
         </Routes>
         
         {/* Global components */}
+        <AutoScrollToTop />
         <ScrollToTop />
         <MagzoAIAssistant />
       </BrowserRouter>
