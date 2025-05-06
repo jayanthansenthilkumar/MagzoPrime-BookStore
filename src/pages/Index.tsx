@@ -95,58 +95,6 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Books section with tabs */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col items-center mb-8 text-center">
-              <h2 className="text-3xl font-serif font-bold">Our Selection</h2>
-              <p className="text-muted-foreground mt-2 max-w-lg">
-                Find the perfect book from our carefully curated collections
-              </p>
-              
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-8 w-full max-w-md">
-                <TabsList className="grid grid-cols-3 w-full">
-                  <TabsTrigger value="featured">Featured</TabsTrigger>
-                  <TabsTrigger value="bestsellers">Bestsellers</TabsTrigger>
-                  <TabsTrigger value="new">New Releases</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="featured" className="mt-6">
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                    {featuredBooks.slice(0, 5).map((book) => (
-                      <BookCard key={book.id} book={book} />
-                    ))}
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="bestsellers" className="mt-6">
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                    {bestsellerBooks.slice(0, 5).map((book) => (
-                      <BookCard key={book.id} book={book} />
-                    ))}
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="new" className="mt-6">
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                    {newReleases.slice(0, 5).map((book) => (
-                      <BookCard key={book.id} book={book} />
-                    ))}
-                  </div>
-                </TabsContent>
-              </Tabs>
-              
-              <div className="flex justify-center mt-10">
-                <Button size="lg" asChild>
-                  <Link to={`/${activeTab === 'featured' ? 'categories' : activeTab === 'bestsellers' ? 'bestsellers' : 'new-releases'}`}>
-                    View All
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-        
         {/* Bestselling authors section */}
         <section className="py-16">
           <div className="container mx-auto px-4">
