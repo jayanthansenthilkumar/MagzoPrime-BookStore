@@ -22,6 +22,17 @@ import AdminBooks from "./pages/admin/AdminBooks";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminUsers from "./pages/admin/AdminUsers";
 
+// Additional pages
+import SpecialOffers from "./pages/SpecialOffers";
+import Help from "./pages/Help";
+import Shipping from "./pages/Shipping";
+import Returns from "./pages/Returns";
+import Contact from "./pages/Contact";
+import About from "./pages/About";
+import Careers from "./pages/Careers";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -44,12 +55,23 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/account" element={<Account />} />
 
+          {/* Info pages */}
+          <Route path="/special-offers" element={<SpecialOffers />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/shipping" element={<Shipping />} />
+          <Route path="/returns" element={<Returns />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+
           {/* Admin routes */}
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/books" element={<AdminBooks />} />
           <Route path="/admin/orders" element={<AdminOrders />} />
           <Route path="/admin/users" element={<AdminUsers />} />
-          
+
           {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
