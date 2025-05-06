@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { ShoppingCart, Menu, Book, Search, User } from 'lucide-react';
+import { ShoppingCart, Menu, BookOpen, Search, User } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { getCurrentUser } from '../data/users';
 import { loadCart } from '../data/cart';
@@ -38,8 +38,8 @@ const Header = () => {
               <SheetContent side="left">
                 <div className="px-2 py-6">
                   <div className="flex items-center mb-6">
-                    <Book className="h-6 w-6 text-primary mr-2" />
-                    <span className="font-serif text-xl font-bold">BookShelf</span>
+                    <BookOpen className="h-6 w-6 text-primary mr-2" />
+                    <span className="font-serif text-xl font-bold">Magzo Prime</span>
                   </div>
                   <nav className="flex flex-col gap-4">
                     <Link to="/" className="text-lg font-medium">
@@ -76,8 +76,8 @@ const Header = () => {
             
             {/* Logo */}
             <Link to="/" className="flex items-center">
-              <Book className="h-6 w-6 text-primary mr-2" />
-              <span className="font-serif text-xl font-bold hidden sm:inline-block">BookShelf</span>
+              <BookOpen className="h-6 w-6 text-primary mr-2" />
+              <span className="font-serif text-xl font-bold hidden sm:inline-block">Magzo Prime</span>
             </Link>
             
             {/* Desktop navigation */}

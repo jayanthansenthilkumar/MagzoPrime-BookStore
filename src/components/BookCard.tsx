@@ -85,7 +85,7 @@ const BookCard = ({ book, compact = false }: BookCardProps) => {
     <Card className="book-card h-full overflow-hidden border border-border">
       <CardContent className="p-3 h-full flex flex-col">
         <Link to={`/book/${book.id}`} className="flex flex-col flex-grow">
-          <div className="relative pt-[120%] bg-muted mb-3">
+          <div className="relative aspect-[2/3] bg-muted mb-3 overflow-hidden">
             <img 
               src={book.coverImage} 
               alt={book.title}
@@ -93,8 +93,8 @@ const BookCard = ({ book, compact = false }: BookCardProps) => {
             />
             {renderBadges()}
           </div>
-          <h3 className="font-medium line-clamp-2 mb-1">{book.title}</h3>
-          <p className="text-sm text-muted-foreground">{book.author}</p>
+          <h3 className="font-medium line-clamp-2 min-h-[2.5rem] mb-1">{book.title}</h3>
+          <p className="text-sm text-muted-foreground line-clamp-1">{book.author}</p>
           <div className="mt-2 flex items-center">
             <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
             <span className="text-sm ml-1">{book.rating}</span>
