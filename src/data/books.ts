@@ -418,7 +418,7 @@ export const books: Book[] = [
     rating: 4.7,
     category: "cat-fiction",
     genre: "genre-sci-fi",
-    description: "Set on the desert planet Arrakis, Dune is the story of the boy Paul Atreides, heir to a noble family tasked with ruling an inhospitable world where the only thing of value is the "spice" melange, a drug capable of extending life and enhancing consciousness.",
+    description: "Set on the desert planet Arrakis, Dune is the story of the boy Paul Atreides, heir to a noble family tasked with ruling an inhospitable world where the only thing of value is the 'spice' melange, a drug capable of extending life and enhancing consciousness.",
     publicationDate: "1965-08-01",
     pages: 688,
     isbn: "978-0441172719",
