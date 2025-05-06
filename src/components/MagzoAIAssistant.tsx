@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { Bot, MessageSquare, Mic } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -187,16 +186,18 @@ export function MagzoAIAssistant() {
     }, 1000);
   };
   
-  const AIToggleButton = () => (
-    <Button
-      onClick={() => setOpen(true)}
-      className="fixed bottom-6 right-6 z-50 rounded-full p-3 shadow-lg transition-all duration-300 hover:transform hover:-translate-y-1 bg-primary"
-      size="icon"
-      aria-label="Open Magzo AI Assistant"
-    >
-      <Bot className="h-5 w-5" />
-    </Button>
-  );
+  function AIToggleButton() {
+    return (
+      <Button
+        onClick={() => setOpen(true)}
+        className="fixed bottom-6 left-6 z-50 rounded-full p-3 shadow-lg bg-primary hover:bg-primary/90"
+        size="icon"
+        aria-label="Open AI Assistant"
+      >
+        <MessageSquare className="h-5 w-5 text-white" />
+      </Button>
+    );
+  }
   
   // Render different UI components based on device type
   const renderContent = () => {
