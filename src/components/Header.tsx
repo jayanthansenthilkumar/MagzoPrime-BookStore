@@ -1,12 +1,19 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { ShoppingCart, Menu, BookOpen, Search, User } from 'lucide-react';
+import { ShoppingCart, Menu, BookOpen, Search, User, LogOut } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-import { getCurrentUser } from '../data/users';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuSeparator,
+  DropdownMenuTrigger 
+} from './ui/dropdown-menu';
+import { getCurrentUser, setCurrentUser } from '../data/users';
 import { loadCart } from '../data/cart';
+import { toast } from 'sonner';
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -20,6 +27,12 @@ const Header = () => {
     if (searchTerm.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
     }
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    toast.success('Logged out successfully');
+    navigate('/');
   };
 
   return (
@@ -59,7 +72,19 @@ const Header = () => {
                         Admin Dashboard
                       </Link>
                     )}
-                    {!currentUser && (
+                    {currentUser ? (
+                      <>
+                        <Link to="/account" className="text-lg font-medium">
+                          My Account
+                        </Link>
+                        <button 
+                          onClick={handleLogout}
+                          className="text-lg font-medium text-left text-red-600"
+                        >
+                          Logout
+                        </button>
+                      </>
+                    ) : (
                       <>
                         <Link to="/login" className="text-lg font-medium">
                           Sign In
@@ -137,17 +162,39 @@ const Header = () => {
               </Button>
             </Link>
             
-            <Link to={currentUser ? '/account' : '/login'}>
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
-                <span className="sr-only">Account</span>
-              </Button>
-            </Link>
-            
-            {currentUser?.role === 'admin' && (
-              <Link to="/admin" className="hidden md:block">
-                <Button variant="outline" size="sm">
-                  Admin
+            {currentUser ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <User className="h-5 w-5" />
+                    <span className="sr-only">Account</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <div className="px-2 py-1.5 text-sm font-medium">
+                    {currentUser.name}
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/account">My Account</Link>
+                  </DropdownMenuItem>
+                  {currentUser.role === 'admin' && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin">Admin Dashboard</Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-red-600" onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/login">
+                <Button variant="ghost" size="icon">
+                  <User className="h-5 w-5" />
+                  <span className="sr-only">Login</span>
                 </Button>
               </Link>
             )}

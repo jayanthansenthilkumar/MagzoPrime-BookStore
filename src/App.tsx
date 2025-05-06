@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +11,8 @@ import NotFound from "./pages/NotFound";
 import BookDetail from "./pages/BookDetail";
 import CartPage from "./pages/CartPage";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Account from "./pages/Account";
 import CategoryDetail from "./pages/CategoryDetail";
 import GenreDetail from "./pages/GenreDetail";
 
@@ -40,6 +41,8 @@ const App = () => (
           <Route path="/book/:id" element={<BookDetail />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/account" element={<Account />} />
 
           {/* Admin routes */}
           <Route path="/admin" element={<Dashboard />} />

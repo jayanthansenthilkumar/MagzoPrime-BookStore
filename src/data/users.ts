@@ -1,4 +1,3 @@
-
 export interface User {
   id: string;
   name: string;
@@ -47,4 +46,25 @@ export const setCurrentUser = (user: User | null): void => {
   } else {
     localStorage.removeItem('bookstore-current-user');
   }
+};
+
+// Add a function to register a new user
+export const registerUser = (name: string, email: string, password: string): User => {
+  // Check if email already exists
+  if (users.some(user => user.email === email)) {
+    throw new Error('Email already in use');
+  }
+  
+  const newUser = {
+    id: `user${users.length + 1}`,
+    name,
+    email,
+    role: 'customer' as const,
+    password, // In a real app, this would be hashed
+  };
+  
+  // Add to users array
+  users.push(newUser);
+  
+  return newUser;
 };
