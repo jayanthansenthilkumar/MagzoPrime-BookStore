@@ -96,7 +96,7 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Books section with tabs */}
+        {/* Books section with tabs
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="flex flex-col items-center mb-8 text-center">
@@ -146,7 +146,7 @@ const Index = () => {
               </Tabs>
             </div>
           </div>
-        </section>
+        </section> */}
         
         {/* Bestselling authors section */}
         <section className="py-16">
