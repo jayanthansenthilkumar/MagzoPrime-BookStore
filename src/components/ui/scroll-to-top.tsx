@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { ArrowUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -52,7 +53,7 @@ const ScrollToTop = () => {
     <Button
       onClick={scrollToTop}
       className={cn(
-        "fixed bottom-6 right-6 z-50 rounded-full p-3 shadow-lg transition-all duration-300",
+        "fixed bottom-6 left-6 z-50 rounded-full p-3 shadow-lg transition-all duration-300",
         "hover:transform hover:-translate-y-1", 
         // Always visible but with different styling based on scroll position
         isScrolled ? "bg-secondary" : "bg-primary/80",

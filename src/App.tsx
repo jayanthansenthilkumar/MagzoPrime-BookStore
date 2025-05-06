@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,6 +16,8 @@ import Register from "./pages/Register";
 import Account from "./pages/Account";
 import CategoryDetail from "./pages/CategoryDetail";
 import GenreDetail from "./pages/GenreDetail";
+import { ScrollToTop } from "./components/ui/scroll-to-top";
+import { MagzoAIAssistant } from "./components/MagzoAIAssistant";
 
 // Admin pages
 import Dashboard from "./pages/admin/Dashboard";
@@ -75,6 +78,10 @@ const App = () => (
           {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        
+        {/* Global components */}
+        <ScrollToTop />
+        <MagzoAIAssistant />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
