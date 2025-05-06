@@ -1,5 +1,4 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -25,6 +24,11 @@ import AdminBooks from "./pages/admin/AdminBooks";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminUsers from "./pages/admin/AdminUsers";
 
+// SuperAdmin pages
+import SuperAdminDashboard from "./pages/admin/SuperAdminDashboard";
+import BookApprovals from "./pages/admin/BookApprovals";
+import AdminManagement from "./pages/admin/AdminManagement";
+
 // Additional pages
 import SpecialOffers from "./pages/SpecialOffers";
 import Help from "./pages/Help";
@@ -42,7 +46,6 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
-      <Sonner />
       <BrowserRouter>
         <Routes>
           {/* Customer-facing routes */}
@@ -74,6 +77,11 @@ const App = () => (
           <Route path="/admin/books" element={<AdminBooks />} />
           <Route path="/admin/orders" element={<AdminOrders />} />
           <Route path="/admin/users" element={<AdminUsers />} />
+
+          {/* SuperAdmin routes */}
+          <Route path="/superadmin" element={<SuperAdminDashboard />} />
+          <Route path="/superadmin/approvals" element={<BookApprovals />} />
+          <Route path="/superadmin/admin-management" element={<AdminManagement />} />
 
           {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />

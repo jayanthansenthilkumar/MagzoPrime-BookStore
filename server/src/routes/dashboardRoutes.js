@@ -4,23 +4,24 @@ const {
   getDashboardStats, 
   getRecentOrders, 
   getLowStockBooks, 
-  getRevenueStats 
+  getRevenueStats,
+  getAdminSalesSummary,
+  getProfitAnalysis,
+  getPendingApprovalsCount,
+  getPlatformStats 
 } = require('../controllers/dashboardController');
-const { protect, admin } = require('../middleware/authMiddleware');
+const { protect, admin, superAdmin } = require('../middleware/authMiddleware');
 
-// All dashboard routes should be protected and restricted to admin users
-router.use(protect, admin);
+// Regular admin routes
+router.route('/stats').get(protect, admin, getDashboardStats);
+router.route('/recent-orders').get(protect, admin, getRecentOrders);
+router.route('/low-stock').get(protect, admin, getLowStockBooks);
+router.route('/revenue').get(protect, admin, getRevenueStats);
 
-// Get dashboard statistics
-router.route('/stats').get(getDashboardStats);
-
-// Get recent orders
-router.route('/recent-orders').get(getRecentOrders);
-
-// Get low stock books
-router.route('/low-stock').get(getLowStockBooks);
-
-// Get revenue statistics
-router.route('/revenue').get(getRevenueStats);
+// SuperAdmin routes
+router.route('/admin-sales').get(protect, superAdmin, getAdminSalesSummary);
+router.route('/profit-analysis').get(protect, superAdmin, getProfitAnalysis);
+router.route('/pending-approvals').get(protect, superAdmin, getPendingApprovalsCount);
+router.route('/platform-stats').get(protect, superAdmin, getPlatformStats);
 
 module.exports = router;

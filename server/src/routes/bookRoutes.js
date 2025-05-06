@@ -8,8 +8,11 @@ const {
   updateBook,
   createBookReview,
   getTopBooks,
+  getPendingApprovalBooks,
+  approveBook,
+  rejectBook,
 } = require('../controllers/bookController');
-const { protect, admin } = require('../middleware/authMiddleware');
+const { protect, admin, superAdmin } = require('../middleware/authMiddleware');
 
 // Public routes
 router.route('/').get(getBooks);
@@ -26,5 +29,10 @@ router.route('/')
 router.route('/:id')
   .delete(protect, admin, deleteBook)
   .put(protect, admin, updateBook);
+
+// SuperAdmin routes
+router.get('/pending-approval', protect, superAdmin, getPendingApprovalBooks);
+router.put('/:id/approve', protect, superAdmin, approveBook);
+router.put('/:id/reject', protect, superAdmin, rejectBook);
 
 module.exports = router;

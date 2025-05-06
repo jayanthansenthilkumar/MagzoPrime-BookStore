@@ -44,6 +44,17 @@ const bookSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    approved: {
+      type: Boolean,
+      default: false,
+    },
+    approvedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    approvedAt: {
+      type: Date,
+    },
     reviews: [reviewSchema],
     rating: {
       type: Number,

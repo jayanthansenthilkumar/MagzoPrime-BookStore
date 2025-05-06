@@ -9,7 +9,7 @@ export const login = async (email: string, password: string) => {
       id: response.data._id,
       name: response.data.name,
       email: response.data.email,
-      role: response.data.isAdmin ? 'admin' : 'customer',
+      role: response.data.role || (response.data.isAdmin ? 'admin' : 'customer'),
       token: response.data.token
     };
     
@@ -29,7 +29,7 @@ export const register = async (name: string, email: string, password: string) =>
       id: response.data._id,
       name: response.data.name,
       email: response.data.email,
-      role: response.data.isAdmin ? 'admin' : 'customer',
+      role: response.data.role || (response.data.isAdmin ? 'admin' : 'customer'),
       token: response.data.token
     };
     
@@ -71,13 +71,29 @@ export const updateUserProfile = async (userData: any) => {
       ...currentUser,
       name: response.data.name,
       email: response.data.email,
-      // Only update role if it's present in the response
-      ...(response.data.isAdmin !== undefined ? { role: response.data.isAdmin ? 'admin' : 'customer' } : {})
+      // Use the role from response if available
+      role: response.data.role || currentUser.role
     };
     
     localStorage.setItem('bookstore-current-user', JSON.stringify(updatedUser));
   }
   
+  return response.data;
+};
+
+// SuperAdmin: Create an admin user
+export const createAdminUser = async (userData: any) => {
+  const response = await api.post('/users/create-admin', userData);
+  return response.data;
+};
+
+// Get filtered users (for admins and superAdmins)
+export const getFilteredUsers = async (role?: string) => {
+  let url = '/users';
+  if (role) {
+    url += `?role=${role}`;
+  }
+  const response = await api.get(url);
   return response.data;
 };
 

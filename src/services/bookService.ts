@@ -66,3 +66,21 @@ export const getSpecialOffers = async () => {
   const response = await api.get('/books', { params: { specialOffer: true } });
   return response.data;
 };
+
+// SuperAdmin: Get books pending approval
+export const getPendingApprovalBooks = async () => {
+  const response = await api.get('/books/pending-approval');
+  return response.data;
+};
+
+// SuperAdmin: Approve a book
+export const approveBook = async (id: string) => {
+  const response = await api.put(`/books/${id}/approve`);
+  return response.data;
+};
+
+// SuperAdmin: Reject a book
+export const rejectBook = async (id: string, reason: string) => {
+  const response = await api.put(`/books/${id}/reject`, { reason });
+  return response.data;
+};

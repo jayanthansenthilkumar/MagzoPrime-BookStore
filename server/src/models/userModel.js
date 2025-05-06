@@ -23,6 +23,11 @@ const userSchema = mongoose.Schema(
       minlength: 6,
       select: false,
     },
+    role: {
+      type: String,
+      enum: ['superAdmin', 'admin', 'customer'],
+      default: 'customer',
+    },
     isAdmin: {
       type: Boolean,
       required: true,
@@ -54,6 +59,13 @@ userSchema.pre('save', async function (next) {
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+});
+
+// Set isAdmin field based on role for backward compatibility
+userSchema.pre('save', function (next) {
+  // If role is superAdmin or admin, set isAdmin to true
+  this.isAdmin = ['superAdmin', 'admin'].includes(this.role);
+  next();
 });
 
 // Sign JWT and return

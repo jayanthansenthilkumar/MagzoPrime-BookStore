@@ -25,3 +25,27 @@ export const getRevenueStats = async (period = 'monthly') => {
   const response = await api.get('/dashboard/revenue', { params: { period } });
   return response.data;
 };
+
+// SuperAdmin: Get admin sales summary
+export const getAdminSalesSummary = async () => {
+  const response = await api.get('/dashboard/admin-sales');
+  return response.data;
+};
+
+// SuperAdmin: Get detailed profit analysis
+export const getProfitAnalysis = async (period = 'monthly') => {
+  const response = await api.get('/dashboard/profit-analysis', { params: { period } });
+  return response.data;
+};
+
+// SuperAdmin: Get pending approvals count
+export const getPendingApprovalsCount = async () => {
+  const response = await api.get('/dashboard/pending-approvals');
+  return response.data;
+};
+
+// SuperAdmin: Get overall platform stats
+export const getPlatformStats = async () => {
+  const response = await api.get('/dashboard/platform-stats');
+  return response.data;
+};

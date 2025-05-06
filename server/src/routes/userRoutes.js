@@ -9,8 +9,9 @@ const {
   deleteUser,
   getUserById,
   updateUser,
+  createAdminUser,
 } = require('../controllers/userController');
-const { protect, admin } = require('../middleware/authMiddleware');
+const { protect, admin, superAdmin } = require('../middleware/authMiddleware');
 
 // Public routes
 router.post('/', registerUser);
@@ -29,5 +30,8 @@ router.route('/:id')
   .delete(protect, admin, deleteUser)
   .get(protect, admin, getUserById)
   .put(protect, admin, updateUser);
+  
+// SuperAdmin routes
+router.post('/create-admin', protect, superAdmin, createAdminUser);
 
 module.exports = router;

@@ -32,6 +32,11 @@ const getBooks = async (req, res) => {
     const specialOffer = req.query.specialOffer
       ? { isSpecialOffer: true }
       : {};
+      
+    // Only show approved books to public unless user is admin or superAdmin
+    const approvedFilter = req.user && ['admin', 'superAdmin'].includes(req.user.role) 
+      ? {} 
+      : { approved: true };
 
     const count = await Book.countDocuments({
       ...keyword,
@@ -39,6 +44,7 @@ const getBooks = async (req, res) => {
       ...bestseller,
       ...newRelease,
       ...specialOffer,
+      ...approvedFilter,
     });
 
     const books = await Book.find({
@@ -47,6 +53,7 @@ const getBooks = async (req, res) => {
       ...bestseller,
       ...newRelease,
       ...specialOffer,
+      ...approvedFilter,
     })
       .populate('category', 'name')
       .limit(pageSize)
@@ -266,6 +273,65 @@ const getTopBooks = async (req, res) => {
   }
 };
 
+// @desc    Get books pending approval
+// @route   GET /api/books/pending-approval
+// @access  Private/SuperAdmin
+const getPendingApprovalBooks = async (req, res) => {
+  try {
+    const books = await Book.find({ approved: false })
+      .populate('category', 'name')
+      .populate('user', 'name email');
+    
+    res.json(books);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Approve a book
+// @route   PUT /api/books/:id/approve
+// @access  Private/SuperAdmin
+const approveBook = async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+
+    if (book) {
+      book.approved = true;
+      book.approvedBy = req.user._id;
+      book.approvedAt = Date.now();
+
+      const updatedBook = await book.save();
+      res.json(updatedBook);
+    } else {
+      res.status(404);
+      throw new Error('Book not found');
+    }
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+// @desc    Reject a book
+// @route   PUT /api/books/:id/reject
+// @access  Private/SuperAdmin
+const rejectBook = async (req, res) => {
+  try {
+    const { reason } = req.body;
+    const book = await Book.findById(req.params.id);
+
+    if (book) {
+      // Delete the book or you could set a rejected flag if you want to keep track
+      await book.deleteOne();
+      res.json({ message: 'Book rejected and removed' });
+    } else {
+      res.status(404);
+      throw new Error('Book not found');
+    }
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getBooks,
   getBookById,
@@ -274,4 +340,7 @@ module.exports = {
   updateBook,
   createBookReview,
   getTopBooks,
+  getPendingApprovalBooks,
+  approveBook,
+  rejectBook,
 };
