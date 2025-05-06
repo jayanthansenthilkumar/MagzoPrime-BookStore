@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../lib/utils';
@@ -13,7 +12,10 @@ interface AdminSidebarProps {
 const AdminSidebar = ({ className }: AdminSidebarProps) => {
   const location = useLocation();
   
-  const isActive = (path: string) => {
+  const isActive = (path: string, exact: boolean = false) => {
+    if (exact) {
+      return location.pathname === path;
+    }
     return location.pathname === path || location.pathname.startsWith(`${path}/`);
   };
   
@@ -51,10 +53,8 @@ const AdminSidebar = ({ className }: AdminSidebarProps) => {
       to={item.href}
       className={cn(
         "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-all",
-        isActive(item.href) && item.exact
+        isActive(item.href, item.exact)
           ? "bg-primary text-primary-foreground"
-          : isActive(item.href) && !item.exact
-          ? "bg-primary text-primary-foreground" 
           : "hover:bg-muted"
       )}
     >
