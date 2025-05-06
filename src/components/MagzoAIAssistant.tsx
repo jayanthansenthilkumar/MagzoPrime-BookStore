@@ -9,8 +9,33 @@ import { Toggle } from '@/components/ui/toggle';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from '@/components/ui/use-toast';
+
+// Define Speech Recognition types for TypeScript
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  onresult: (event: SpeechRecognitionEvent) => void;
+  onend: () => void;
+}
+
+interface SpeechRecognitionEvent {
+  results: {
+    [index: number]: {
+      [index: number]: {
+        transcript: string;
+      };
+    };
+  };
+}
+
+interface Window {
+  SpeechRecognition?: new () => SpeechRecognition;
+  webkitSpeechRecognition?: new () => SpeechRecognition;
+}
 
 // Example messages for the assistant
 const preloadedMessages = [
@@ -43,17 +68,17 @@ export function MagzoAIAssistant() {
   const [isListening, setIsListening] = React.useState(false);
   const [voiceEnabled, setVoiceEnabled] = React.useState(true);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
-  const { isMobile } = useMobile();
+  const isMobile = useIsMobile();
   
   // Speech recognition setup
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+  const SpeechRecognitionClass = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+  const recognition = SpeechRecognitionClass ? new SpeechRecognitionClass() : null;
   
   if (recognition) {
     recognition.continuous = false;
     recognition.lang = 'en-US';
     
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript;
       setInputValue(transcript);
       setIsListening(false);
